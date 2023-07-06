@@ -168,7 +168,52 @@ public class Main {
     }
 
     private static void updateSupplier() {
+        clearConsole();
 
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("+|                             UPDATE SUPPLIER                              |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        String option = "y";
+        while (option.equals("y") || option.equals("Y")){
+            System.out.print("Supplier ID : ");
+            String inputted_supplier_id = input.next();
+            boolean valid = checkSupplierValidity(inputted_supplier_id);
+
+            while(!valid){
+                System.out.println("Can't find supplier id. Try again!\n");
+                System.out.print("Supplier ID : ");
+                inputted_supplier_id = input.next();
+                System.out.println();
+            }
+
+            String supplier_name = getSupplierName(inputted_supplier_id);
+            System.out.println("Supplier Name : "+supplier_name);
+
+            System.out.println("Enter the new supplier Name : ");
+            String inputted_supplier_name = input.next();
+
+            for (int i = 0; i < supplier_array.length; i++) {
+                if(inputted_supplier_id.equals(supplier_array[i][0])){
+                    supplier_array[i][1]=inputted_supplier_name;
+                }
+            }
+            System.out.print("Updated successfully! Do you want to update another supplier (Y/N) : ");
+            option = input.next();
+        }
+
+        clearConsole();
+        supplierManage();
+
+    }
+
+    private static String getSupplierName(String inputtedSupplierId) {
+        for (int i = 0; i < supplier_array.length; i++) {
+            if(supplier_array[i][0].equals(inputtedSupplierId)){
+                return supplier_array[i][1];
+            }
+        }
+        return null;
     }
 
     private static void addSupplier() {
@@ -182,7 +227,7 @@ public class Main {
             String inputted_supplier_id = input.next();
             boolean valid = checkSupplierValidity(inputted_supplier_id);
 
-            while(!valid){
+            while(valid){
                 System.out.print("Already exists. Try another supplier id!");
                 inputted_supplier_id = input.next();
                 valid = checkSupplierValidity(inputted_supplier_id);
