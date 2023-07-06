@@ -156,6 +156,33 @@ public class Main {
     }
 
     private static void searchSupplier() {
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("+|                              SEARCH SUPPLIER                              |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        String option = "y";
+        while (option.equals("y") || option.equals("Y")){
+            System.out.print("Supplier ID : ");
+            String inputted_supplier_id = input.next();
+
+            boolean validity = checkSupplierValidity(inputted_supplier_id);
+
+            while (!validity){
+                System.out.println("Can't find supplier id. Try again!\n");
+                System.out.print("Supplier ID : ");
+                inputted_supplier_id = input.next();
+                validity = checkSupplierValidity(inputted_supplier_id);
+            }
+
+            String name = getSupplierName(inputted_supplier_id);
+            System.out.println("Supplier Name : "+name);
+
+            System.out.print("Found Successfully! Do you want to find another supplier (Y/N) : ");
+            option = input.next();
+
+        }
+        clearConsole();
+        supplierManage();
 
     }
 
@@ -173,6 +200,14 @@ public class Main {
             System.out.printf("|%-22s|%-22s|\n", supplier_array[i][0], supplier_array[i][1]);
         }
         System.out.println("+----------------------+----------------------+");
+
+        System.out.print("Do you want to go supplier manage page (Y/N) : ");
+        String option = input.next();
+
+        if(option.equals("y") || option.equals("Y")){
+            clearConsole();
+            supplierManage();
+        }
 
     }
 
