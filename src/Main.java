@@ -9,6 +9,8 @@ public class Main {
 
     static String[][] category_array = new String[0][2];
 
+    static String[][] item_array = new String[0][6];
+
 
     public static void main(String[] args) {
 //        loadLoginPage();
@@ -158,7 +160,7 @@ public class Main {
 
     private static void searchSupplier() {
         System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("+|                              SEARCH SUPPLIER                              |");
+        System.out.println("|                               SEARCH SUPPLIER                              |");
         System.out.println("+---------------------------------------------------------------------------+\n");
 
         String option = "y";
@@ -216,7 +218,7 @@ public class Main {
         clearConsole();
 
         System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("+|                             DELETE SUPPLIER                              |");
+        System.out.println("|                              DELETE SUPPLIER                              |");
         System.out.println("+---------------------------------------------------------------------------+\n");
 
         String option = "y";
@@ -257,7 +259,7 @@ public class Main {
         clearConsole();
 
         System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("+|                             UPDATE SUPPLIER                              |");
+        System.out.println("|                              UPDATE SUPPLIER                              |");
         System.out.println("+---------------------------------------------------------------------------+\n");
 
         String option = "y";
@@ -398,12 +400,116 @@ public class Main {
     }
 
     private static void addItem() {
-        
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("|                                ADD ITEM                                   |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        String main_option = "y";
+        while(main_option.equals("y") || main_option.equals("Y")){
+            boolean hasItemCategory = !(category_array.length == 0);
+            if(!hasItemCategory){
+                System.out.println("OOPS! It seems that you don't have any item categories in the system.");
+                System.out.print("Do you want to add a new item category (Y/N) : ");
+                String option = input.next();
+                if(option.equals("y") || option.equals("Y")){
+                    addNewItemCategory();
+                }else{
+                    clearConsole();
+                    stockManagement();
+                }
+            }else{
+                boolean hasSupplier = !(supplier_array.length == 0);
+                if(!hasSupplier){
+                    System.out.println("OOPS! It seems that you don't have any suppliers in the system.");
+                    System.out.print("Do you want to add a new supplier (Y/N) : ");
+                    String option = input.next();
+
+                    if(option.equals("y") || option.equals("Y")){
+                        addNewItemCategory();
+                    }else{
+                        clearConsole();
+                        stockManagement();
+                    }
+                }
+            }
+
+            System.out.print("Item Code : ");
+            String inputted_item_code = input.next();
+
+            showSupplierList();
+
+            System.out.print("Enter the supplier number : ");
+            String inputted_supplier_number = input.next();
+
+            showItemCategories();
+
+            System.out.print("Enter the category number : ");
+            String inputted_category_number = input.next();
+
+            System.out.print("\nDescription : ");
+            String inputted_description = input.next();
+
+            System.out.print("\nUnit Price : ");
+            String inputted_unit_price = input.next();
+
+            System.out.print("\nQty On Hand : ");
+            String inputted_qty_on_hand = input.next();
+
+            item_array = incrementItemArray();
+
+            item_array[item_array.length-1][0] = inputted_item_code;
+            item_array[item_array.length-1][1] = inputted_description;
+            item_array[item_array.length-1][2] = inputted_unit_price;
+            item_array[item_array.length-1][3] = inputted_qty_on_hand;
+            item_array[item_array.length-1][4] = inputted_category_number;
+            item_array[item_array.length-1][5] = inputted_supplier_number;
+
+            System.out.print("Added successfully! Do you want add another item (Y/N) : ");
+            main_option = input.next();
+        }
+
+        stockManagement();
+    }
+
+    private static String[][] incrementItemArray() {
+        String[][] temp = new String[item_array.length+1][6];
+        for (int i = 0; i < item_array.length; i++) {
+            for (int j = 0; j < item_array[0].length; j++) {
+                temp[i][j] = item_array[i][j];
+            }
+        }
+        return temp;
+    }
+
+    private static void showItemCategories() {
+        System.out.println("\nItem Categories : ");
+        System.out.println("+----------------------+----------------------+");
+        System.out.printf("|%-22s|%-22s|\n", "#","CATEGORY NAME");
+        System.out.println("+----------------------+----------------------+");
+
+        for (int i = 0; i < item_array.length; i++) {
+            System.out.printf("|%-22s|%-22s|\n",i+1, supplier_array[i][1]);
+        }
+        System.out.println("+----------------------+----------------------+");
+
+    }
+
+    private static void showSupplierList() {
+        System.out.println("\nSupplier List : ");
+        System.out.println("+----------------------+----------------------+----------------------+");
+        System.out.printf("|%-22s|%-22s|%-22s|\n", "#","SUPPLIER ID", "SUPPLIER NAME");
+        System.out.println("+----------------------+----------------------+----------------------+");
+
+        for (int i = 0; i < supplier_array.length; i++) {
+            System.out.printf("|%-22s|%-22s|%-22s|\n",i+1, supplier_array[i][0], supplier_array[i][1]);
+        }
+        System.out.println("+----------------------+----------------------+----------------------+");
+
     }
 
     private static void manageItemCategories() {
         System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("+|                          MANAGE ITEM CATEGORY                            |");
+        System.out.println("|                          MANAGE ITEM CATEGORY                             |");
         System.out.println("+---------------------------------------------------------------------------+\n");
 
         System.out.printf("%-48s%-48s\n", "[1] Add New Item Category", "[2] Delete Item Category");
@@ -426,7 +532,8 @@ public class Main {
     }
 
     private static void stockManagement() {
-
+        clearConsole();
+        stockManage();
     }
 
     private static void updateItemCategory() {
@@ -434,7 +541,43 @@ public class Main {
     }
 
     private static void deleteItemCategory() {
-
+//        clearConsole();
+//
+//        System.out.println("+---------------------------------------------------------------------------+");
+//        System.out.println("|                           DELETE ITEM CATEGORY                            |");
+//        System.out.println("+---------------------------------------------------------------------------+\n");
+//
+//        String option = "y";
+//        while (option.equals("y") || option.equals("Y")){
+//            System.out.print("Supplier ID : ");
+//            String inputted_supplier_id = input.next();
+//            boolean valid = checkSupplierValidity(inputted_supplier_id);
+//
+//            while(!valid){
+//                System.out.println("Can't find supplier id. Try again!\n");
+//                System.out.print("Supplier ID : ");
+//                inputted_supplier_id = input.next();
+//                valid = checkSupplierValidity(inputted_supplier_id);
+//                System.out.println();
+//            }
+//
+//            String[][] temp = new String[supplier_array.length][2];
+//
+//            for (int i = 0; i < supplier_array.length; i++) {
+//                if(inputted_supplier_id.equals(supplier_array[i][0])){
+//                    continue;
+//                }
+//                temp[i][0] = supplier_array[i][0];
+//                temp[i][1] = supplier_array[i][1];
+//            }
+//            supplier_array=temp;
+//
+//            System.out.print("Deleted successfully! Do you want to delete another supplier (Y/N) : ");
+//            option = input.next();
+//        }
+//
+//        clearConsole();
+//        supplierManage();
     }
 
     private static void addNewItemCategory() {
