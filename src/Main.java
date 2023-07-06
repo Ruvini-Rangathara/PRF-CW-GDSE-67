@@ -664,7 +664,51 @@ public class Main {
     }
 
     private static void updateItemCategory() {
+        clearConsole();
 
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("|                           UPDATE ITEM CATEGORY                            |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        String option = "y";
+        while (option.equals("y") || option.equals("Y")){
+            System.out.print("Item Category : ");
+            String inputted_category = input.next();
+            boolean valid = checkCategoryValidity(inputted_category);
+
+            while(!valid){
+                System.out.println("Can't find Category. Try again!\n");
+                System.out.print("Item Category : ");
+                inputted_category = input.next();
+                valid = checkCategoryValidity(inputted_category);
+                System.out.println();
+            }
+
+            System.out.print("Enter new item category : ");
+            String inputted_update_category = input.next();
+
+            for (int i = 0; i < category_array.length; i++) {
+                if(inputted_category.equals(category_array[i])){
+                    category_array[i] = inputted_update_category;
+                }
+            }
+
+            updateItemArrayAfterUpdateCategory(inputted_category , inputted_update_category);
+
+            System.out.print("Updated successfully! Do you want to update another category (Y/N) : ");
+            option = input.next();
+        }
+
+        clearConsole();
+        supplierManage();
+    }
+
+    private static void updateItemArrayAfterUpdateCategory(String inputtedCategory, String inputtedUpdateCategory) {
+        for (int i = 0; i < item_array.length; i++) {
+            if(item_array[i][4].equals(inputtedCategory)){
+                item_array[i][4] = inputtedUpdateCategory;
+            }
+        }
     }
 
     private static void deleteItemCategory() {
