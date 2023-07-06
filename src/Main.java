@@ -389,6 +389,42 @@ public class Main {
     }
 
     private static void rankItemsPerUnitPrice() {
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("|                            RANKED UNIT PRICE                              |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        String[][] sorted_item_array = item_array;
+
+        for (int i = 0; i <item_array.length; i++) {
+            String[] temp=null;
+            for (int j = 0; j < sorted_item_array.length-1; j++) {
+                if(Integer.parseInt(sorted_item_array[j][2]) > Integer.parseInt(sorted_item_array[j+1][2])){
+                    temp = sorted_item_array[j+1];
+                    sorted_item_array[j+1] = sorted_item_array[j];
+                    sorted_item_array[j] = temp;
+                }
+            }
+        }
+
+        System.out.println();
+        System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+");
+        System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|%-22s|\n", "SID", "CODE", "DESC","PRICE","QTY","CAT");
+        System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+");
+
+        for (int j = 0; j < sorted_item_array.length; j++) {
+            System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+");
+            System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", item_array[j][5], item_array[j][0] , item_array[j][1] , item_array[j][2] , item_array[j][3] , item_array[j][4]);
+            System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+");
+        }
+        System.out.println();
+
+
+        System.out.print("Do you want to go stock manage page (Y/N) : ");
+        String option = input.next();
+
+        if(option.equals("y") || option.equals("Y")){
+            stockManagement();
+        }
     }
 
     private static void viewItems() {
@@ -413,6 +449,12 @@ public class Main {
                 }
             }
             System.out.println();
+        }
+        System.out.print("Do you want to go stock manage page (Y/N) : ");
+        String option = input.next();
+
+        if(option.equals("y") || option.equals("Y")){
+            stockManagement();
         }
     }
 
@@ -703,20 +745,6 @@ public class Main {
         }
         return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
