@@ -237,12 +237,14 @@ public class Main {
 
             String[][] temp = new String[supplier_array.length][2];
 
+            int k=0;
             for (int i = 0; i < supplier_array.length; i++) {
                 if(inputted_supplier_id.equals(supplier_array[i][0])){
                     continue;
                 }
-                temp[i][0] = supplier_array[i][0];
-                temp[i][1] = supplier_array[i][1];
+                temp[k][0] = supplier_array[i][0];
+                temp[k][1] = supplier_array[i][1];
+                k++;
             }
             supplier_array=temp;
 
@@ -666,43 +668,54 @@ public class Main {
     }
 
     private static void deleteItemCategory() {
-//        clearConsole();
-//
-//        System.out.println("+---------------------------------------------------------------------------+");
-//        System.out.println("|                           DELETE ITEM CATEGORY                            |");
-//        System.out.println("+---------------------------------------------------------------------------+\n");
-//
-//        String option = "y";
-//        while (option.equals("y") || option.equals("Y")){
-//            System.out.print("Supplier ID : ");
-//            String inputted_supplier_id = input.next();
-//            boolean valid = checkSupplierValidity(inputted_supplier_id);
-//
-//            while(!valid){
-//                System.out.println("Can't find supplier id. Try again!\n");
-//                System.out.print("Supplier ID : ");
-//                inputted_supplier_id = input.next();
-//                valid = checkSupplierValidity(inputted_supplier_id);
-//                System.out.println();
-//            }
-//
-//            String[][] temp = new String[supplier_array.length][2];
-//
-//            for (int i = 0; i < supplier_array.length; i++) {
-//                if(inputted_supplier_id.equals(supplier_array[i][0])){
-//                    continue;
-//                }
-//                temp[i][0] = supplier_array[i][0];
-//                temp[i][1] = supplier_array[i][1];
-//            }
-//            supplier_array=temp;
-//
-//            System.out.print("Deleted successfully! Do you want to delete another supplier (Y/N) : ");
-//            option = input.next();
-//        }
-//
-//        clearConsole();
-//        supplierManage();
+        clearConsole();
+
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("|                           DELETE ITEM CATEGORY                            |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        String option = "y";
+        while (option.equals("y") || option.equals("Y")){
+            System.out.print("Item Category : ");
+            String inputted_category = input.next();
+            boolean valid = checkCategoryValidity(inputted_category);
+
+            while(!valid){
+                System.out.println("Can't find Category. Try again!\n");
+                System.out.print("Item Category : ");
+                inputted_category = input.next();
+                valid = checkCategoryValidity(inputted_category);
+                System.out.println();
+            }
+
+            String[] temp = new String[category_array.length-1];
+
+            int k =0;
+            for (int i = 0; i < category_array.length; i++) {
+                if(inputted_category.equals(category_array[i])){
+                    continue;
+                }
+                temp[k] = category_array[i];
+                k++;
+            }
+            category_array=temp;
+
+            updateItemArrayAfterDeleteCategory(inputted_category);
+
+            System.out.print("Deleted successfully! Do you want to delete another category (Y/N) : ");
+            option = input.next();
+        }
+
+        clearConsole();
+        supplierManage();
+    }
+
+    private static void updateItemArrayAfterDeleteCategory(String inputtedCategory) {
+        for (int i = 0; i < item_array.length; i++) {
+            if(inputtedCategory.equals(item_array[i][4])){
+                item_array[i][4] = null;
+            }
+        }
     }
 
     private static void addNewItemCategory() {
@@ -764,4 +777,7 @@ public class Main {
             System.err.println(e.getMessage());
         }
     }
+
+
+
 }
