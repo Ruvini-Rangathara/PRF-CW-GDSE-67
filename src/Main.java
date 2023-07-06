@@ -7,7 +7,7 @@ public class Main {
 
     static String[][] supplier_array = new String[0][2];
 
-    static String[][] category_array = new String[0][2];
+    static String[] category_array = new String[0];
 
     static String[][] item_array = new String[0][6];
 
@@ -392,7 +392,28 @@ public class Main {
     }
 
     private static void viewItems() {
-        
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("|                               VIEW ITEMS                                  |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        for (int i = 0; i <category_array.length; i++) {
+            System.out.println(category_array[i]+ " : ");
+
+            System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
+            System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", "SID", "CODE", "DESC","PRICE","QTY");
+            System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
+
+
+            for (int j = 0; j < item_array.length; j++) {
+                if(category_array[i].equals(item_array[i][4])){
+                    System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
+                    System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", item_array[i][5], item_array[i][0] , item_array[i][1] , item_array[i][2] , item_array[i][3]);
+                    System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
+
+                }
+            }
+            System.out.println();
+        }
     }
 
     private static void getItemSupplierWise() {
@@ -400,23 +421,32 @@ public class Main {
         System.out.println("|                            SEARCH SUPPLIER                                |");
         System.out.println("+---------------------------------------------------------------------------+\n");
 
-        System.out.print("\nEnter supplier Id : ");
-        String inputted_supplier_id = input.next();
+        String option = "y";
 
-        boolean supplierValidity = checkSupplierValidity(inputted_supplier_id);
-        if(supplierValidity){
-            String supplierName = getSupplierName(inputted_supplier_id);
-            System.out.println("Supplier Name : "+supplierName);
+        while (option.equals("y") || option.equals("Y")){
+            System.out.print("\nEnter supplier Id : ");
+            String inputted_supplier_id = input.next();
+
+            boolean supplierValidity = checkSupplierValidity(inputted_supplier_id);
+            if(supplierValidity){
+                String supplierName = getSupplierName(inputted_supplier_id);
+                System.out.println("Supplier Name : "+supplierName);
+            }
+
+            while (!supplierValidity){
+                System.out.println("Invalid supplier ID! Try again.");
+                System.out.print("Enter supplier Id : ");
+                inputted_supplier_id = input.next();
+                supplierValidity = checkSupplierValidity(inputted_supplier_id);
+            }
+
+            showItemsSupplierWiseInTable(inputted_supplier_id);
+            System.out.print("Search Successfully! Do you want to another search (Y/N) : ");
+            option = input.next();
+
         }
-
-        while (!supplierValidity){
-            System.out.println("Invalid supplier ID! Try again.");
-            System.out.print("Enter supplier Id : ");
-            inputted_supplier_id = input.next();
-            supplierValidity = checkSupplierValidity(inputted_supplier_id);
-        }
-
-        showItemsSupplierWiseInTable(inputted_supplier_id);
+        clearConsole();
+        stockManagement();
 
     }
 
@@ -437,10 +467,9 @@ public class Main {
 
 
         for (int i = 0; i < supplier_array.length; i++) {
-            String category_id = temp[i][4];
-            String temp_item_category = category_array[Integer.parseInt(category_id)-1][1];
+            String category_name = temp[i][4];
 
-            System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", temp[i][0], temp[i][1], temp[i][2], temp[i][3], temp_item_category);
+            System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", temp[i][0], temp[i][1], temp[i][2], temp[i][3], category_name);
         }
         System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
 
@@ -506,7 +535,7 @@ public class Main {
             item_array = incrementItemArray();
 
             //get category name by category number
-            String item_category_id = category_array[Integer.parseInt(inputted_category_number) - 1][0];
+            String item_category_name = category_array[Integer.parseInt(inputted_category_number) - 1];
 
             //get supplier name by supplier number
             String item_supplier_id = supplier_array[Integer.parseInt(inputted_supplier_number) - 1][0];
@@ -515,7 +544,7 @@ public class Main {
             item_array[item_array.length-1][1] = inputted_description;
             item_array[item_array.length-1][2] = inputted_unit_price;
             item_array[item_array.length-1][3] = inputted_qty_on_hand;
-            item_array[item_array.length-1][4] = item_category_id;
+            item_array[item_array.length-1][4] = item_category_name;
             item_array[item_array.length-1][5] = item_supplier_id;
 
             System.out.print("Added successfully! Do you want add another item (Y/N) : ");
@@ -647,12 +676,8 @@ public class Main {
 
             boolean validity = checkCategoryValidity(inputted_category);
             if(!validity){
-                String category_number = String.valueOf(category_array.length+1);
                 category_array =  incrementCategoryArray();
-
-                category_array[category_array.length-1][0] = category_number;
-                category_array[category_array.length-1][1] = inputted_category;
-
+                category_array[category_array.length-1] = inputted_category;
             }
 
             System.out.print("Added successfully! Do you want to add another category (Y/N) : ");
@@ -662,18 +687,17 @@ public class Main {
 
     }
 
-    private static String[][] incrementCategoryArray() {
-        String[][] temp = new String[category_array.length+1][2];
+    private static String[] incrementCategoryArray() {
+        String[] temp = new String[category_array.length+1];
         for (int i = 0; i < category_array.length; i++) {
-            temp[i][0] = category_array[i][0];
-            temp[i][1] = category_array[i][1];
+            temp[i] = category_array[i];
         }
         return temp;
     }
 
     private static boolean checkCategoryValidity(String inputtedCategory) {
         for (int i = 0; i < category_array.length; i++) {
-            if(category_array[i][1].equals(inputtedCategory)){
+            if(category_array[i].equals(inputtedCategory)){
                 return true;
             }
         }
