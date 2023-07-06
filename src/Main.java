@@ -44,7 +44,7 @@ public class Main {
         clearConsole();
 
         System.out.println("+---------------------------------------------------------------------------+");
-        System.out.println("+|                   WELCOME TO IJSE STOCK MANAGEMENT SYSTEM                |");
+        System.out.println("+|                WELCOME TO IJSE STOCK MANAGEMENT SYSTEM                   |");
         System.out.println("+---------------------------------------------------------------------------+\n");
 
         System.out.printf("%-48s%-48s\n", "[1] Change the credentials", "[2] Supplier Manage");
@@ -160,6 +160,19 @@ public class Main {
     }
 
     private static void viewSuppliers() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("+|                              VIEW SUPPLIERS                               |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        System.out.println("+----------------------+----------------------+");
+        System.out.printf("|%-22s|%-22s|\n", "SUPPLIER ID", "SUPPLIER NAME");
+        System.out.println("+----------------------+----------------------+");
+
+        for (int i = 0; i < supplier_array.length; i++) {
+            System.out.printf("|%-22s|%-22s|\n", supplier_array[i][0], supplier_array[i][1]);
+        }
+        System.out.println("+----------------------+----------------------+");
 
     }
 
@@ -276,11 +289,12 @@ public class Main {
             String inputted_supplier_name = input.next();
 
             supplier_array = extendSupplierArray(supplier_array);
-            supplier_array[supplier_array.length][0] = inputted_supplier_id;
-            supplier_array[supplier_array.length][1] = inputted_supplier_name;
+            supplier_array[supplier_array.length-1][0] = inputted_supplier_id;
+            supplier_array[supplier_array.length-1][1] = inputted_supplier_name;
 
             System.out.print("Added successfully! Do you want to add another supplier (Y/N) : ");
             option = input.next();
+            System.out.println();
         }
         clearConsole();
         supplierManage();
