@@ -396,7 +396,55 @@ public class Main {
     }
 
     private static void getItemSupplierWise() {
-        
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("|                            SEARCH SUPPLIER                                |");
+        System.out.println("+---------------------------------------------------------------------------+\n");
+
+        System.out.print("\nEnter supplier Id : ");
+        String inputted_supplier_id = input.next();
+
+        boolean supplierValidity = checkSupplierValidity(inputted_supplier_id);
+        if(supplierValidity){
+            String supplierName = getSupplierName(inputted_supplier_id);
+            System.out.println("Supplier Name : "+supplierName);
+        }
+
+        while (!supplierValidity){
+            System.out.println("Invalid supplier ID! Try again.");
+            System.out.print("Enter supplier Id : ");
+            inputted_supplier_id = input.next();
+            supplierValidity = checkSupplierValidity(inputted_supplier_id);
+        }
+
+        showItemsSupplierWiseInTable(inputted_supplier_id);
+
+    }
+
+    private static void showItemsSupplierWiseInTable(String inputtedSupplierId) {
+
+        System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
+        System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", "ITEM CODE", "DESCRIPTION","UNIT PRICE","QTY ON HAND","CATEGORY");
+        System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
+
+        String[][] temp = new String[0][6];
+        for (int i = 0; i < item_array.length; i++) {
+            if(item_array[i][5].equals(inputtedSupplierId)){
+                for (int j = 0; j < 6; j++) {
+                    temp[i][j] = item_array[i][j];
+                }
+            }
+        }
+
+
+        for (int i = 0; i < supplier_array.length; i++) {
+            String category_id = temp[i][4];
+            String temp_item_category = category_array[Integer.parseInt(category_id)-1][1];
+
+            System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", temp[i][0], temp[i][1], temp[i][2], temp[i][3], temp_item_category);
+        }
+        System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
+
+
     }
 
     private static void addItem() {
@@ -457,12 +505,18 @@ public class Main {
 
             item_array = incrementItemArray();
 
+            //get category name by category number
+            String item_category_id = category_array[Integer.parseInt(inputted_category_number) - 1][0];
+
+            //get supplier name by supplier number
+            String item_supplier_id = supplier_array[Integer.parseInt(inputted_supplier_number) - 1][0];
+
             item_array[item_array.length-1][0] = inputted_item_code;
             item_array[item_array.length-1][1] = inputted_description;
             item_array[item_array.length-1][2] = inputted_unit_price;
             item_array[item_array.length-1][3] = inputted_qty_on_hand;
-            item_array[item_array.length-1][4] = inputted_category_number;
-            item_array[item_array.length-1][5] = inputted_supplier_number;
+            item_array[item_array.length-1][4] = item_category_id;
+            item_array[item_array.length-1][5] = item_supplier_id;
 
             System.out.print("Added successfully! Do you want add another item (Y/N) : ");
             main_option = input.next();
