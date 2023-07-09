@@ -425,7 +425,7 @@ public class Main {
         for (int i = 0; i < item_array.length; i++) {
             String[] temp = null;
             for (int j = 0; j < sorted_item_array.length - 1; j++) {
-                if (Integer.parseInt(sorted_item_array[j][2]) > Integer.parseInt(sorted_item_array[j + 1][2])) {
+                if (Double.parseDouble(sorted_item_array[j][2]) > Double.parseDouble(sorted_item_array[j + 1][2])) {
                     temp = sorted_item_array[j + 1];
                     sorted_item_array[j + 1] = sorted_item_array[j];
                     sorted_item_array[j] = temp;
@@ -467,8 +467,8 @@ public class Main {
             System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
 
             for (int j = 0; j < item_array.length; j++) {
-                if (category_array[i].equals(item_array[i][4])) {
-                    System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", item_array[i][5], item_array[i][0], item_array[i][1], item_array[i][2], item_array[i][3]);
+                if (category_array[i].equals(item_array[j][4])) {
+                    System.out.printf("|%-22s|%-22s|%-22s|%-22s|%-22s|\n", item_array[j][5], item_array[j][0], item_array[j][1], item_array[j][2], item_array[j][3]);
                     System.out.println("+----------------------+----------------------+----------------------+----------------------+----------------------+");
 
                 }
